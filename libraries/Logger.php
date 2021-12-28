@@ -15,6 +15,7 @@ class Logger
 	protected $logIncludeFileName;
 	protected $logDateInFilename;
 	protected $logAllInJson;
+	protected $logJsonPretty;
 
 
     public function __construct( $config  ) {
@@ -117,7 +118,8 @@ class Logger
 		if( empty( $writeArr['traceFileName'] )) unset( $writeArr['traceFileName'] );
 		if( empty( $writeArr['traceCaller'] )) unset( $writeArr['traceCaller'] );
 		if( empty( $writeArr['level'] )) unset( $writeArr['level'] );
-
+		if( !empty( $writeArr['traceFileName'] )) $writeArr['traceFileName'] = str_replace(" -", '', $writeArr['traceFileName'] );
+		array_walk( $writeArr, create_function( '&$val', '$val=trim($val);' ));
 
 		if( $this->logJsonPretty ) $jsonParam = JSON_PRETTY_PRINT;
 		$str = json_encode( $writeArr, $jsonParam )."\n\n";
@@ -207,6 +209,11 @@ class Logger
 		print 'logExtension -> '.  $this->logExtension ."\n";
 		print 'logIncludeTrace -> '.  $this->logIncludeTrace ."\n";
 		print 'logIncludeFileName -> '.  $this->logIncludeFileName ."\n";
+		print 'logDateInFilename ->' .  $this->logDateInFilename ."\n";
+		print 'logAllInJson ->' .  $this->logAllInJson ."\n";
+		print 'logJsonPretty ->' .  $this->logJsonPretty ."\n";
+
+		
 		print "-----------------------------------------------------------\n\n\n";
 	}
 }
